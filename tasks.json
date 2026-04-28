@@ -1,7 +1,9 @@
 [
   {
     "id": 1,
-    "description": "Read Out of Slavery",
-    "status": "todo"
+    "description": "Read a book",
+    "status": "todo",
+    "createdAt": "2026-04-27 19:56:17 -0700",
+    "updatedAt": "2026-04-27 19:56:17 -0700"
   }
 ]
