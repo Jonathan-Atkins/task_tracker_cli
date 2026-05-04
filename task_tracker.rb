@@ -49,6 +49,7 @@ when "add"
 
   File.write(file_name, JSON.pretty_generate(tasks))
   puts "#{description} has been added"
+
 when "list"
   tasks = file_valid?(file_name)
 
