@@ -13,24 +13,26 @@ def valid_description?(description)
 end
 
 def file_valid?(file_name)
-  if File.exist?(file_name)
-    read_file = File.read(file_name)
-    tasks = if !read_file.empty?
-      JSON.parse(read_file)
-    else
-      []
-    end
+  File.exist?(file_name)
+end
+
+def parse_file(file_name)
+  read_file = File.read(file_name)
+  JSON.parse(read_file)
+end
+
+def list_tasks(file_name)
+  if file_valid?(file_name)
+    parse_file(file_name)
   else
-    tasks = []
-    File.write(file_name, "[]")
+    []
   end
-  tasks
 end
 
 case command
 when "add"
   valid_description?(description)
-  tasks = file_valid?(file_name)
+  tasks = list_tasks(file_name)
 
   if tasks.any? { |task| task["description"] == description }
     puts "Error: #{description} has already been added"
@@ -51,11 +53,9 @@ when "add"
   puts "#{description} has been added"
 
 when "list"
-  tasks = file_valid?(file_name)
-
-  if tasks.empty?
-    puts "There are no tasks in #{file_name}"
-  else
+  tasks = list_tasks(file_name)
+  if tasks.any?
+    require "pry-nav"
     tasks.each do |task|
       puts "ID: #{task["id"]}"
       puts "Description: #{task["description"]}"
@@ -65,9 +65,21 @@ when "list"
       puts "Total Tasks = #{tasks.count}"
       puts "-" * 40
     end
+  else
+    puts "#{file_name} has no tasks listed"
   end
 
-  # when "delete"
+when "delete"
+  # ! Find Task
+  # *Is there a description in the argument? If not, exit 1 with a comment to say a task must be identified by its name or ID number
+  tasks = list_tasks(file_name)
+  if tasks.any?
+    require "pry-nav"
+    binding.pry
+  end
+  # ! Remove Tasks from File
+  # * if task is found, remove it from the file
+  # ! Confirm File has been deleted
   #   puts "Deleting task"
   # else
   #   puts "Unknown command"
