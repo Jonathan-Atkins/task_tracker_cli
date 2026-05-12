@@ -2,7 +2,7 @@ require "json"
 require "titleize"
 
 command = ARGV[0]&.strip&.downcase
-description = ARGV[1]&.strip
+description = ARGV[1..-1]&.join(" ")&.strip
 file_name = "tasks.json"
 
 def valid_description?(description)
